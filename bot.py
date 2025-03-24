@@ -17,11 +17,6 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f"✅ Logged in as {bot.user} (ID: {bot.user.id})")
 
-@bot.event
-async def on_message(message):
-    if message.author.bot:
-        return
-
     if message.channel.id == CHANNEL_ID:
         try:
             recipient = await bot.fetch_user(TARGET_USER_ID)
