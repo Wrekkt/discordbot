@@ -16,6 +16,23 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 @bot.event
 async def on_ready():
     print(f"✅ Logged in as {bot.user} (ID: {bot.user.id})")
+    
+@bot.event
+async def on_message(message):
+    # Ignore only this bot’s own messages
+    if message.author.id == bot.user.id:
+        return
+
+    if message.channel.id == CHANNEL_ID:
+        try:
+            recipient = await bot.fetch_user(TARGET_USER_ID)
+            await recipient.send(
+                f"🔔 New message from **{message.author}** in {message.channel.mention}:\n{message.content}"
+            )
+        except Exception as e:
+            print("❌ Failed to DM:", e)
+
+    await bot.process_commands(message)
 
     if message.channel.id == CHANNEL_ID:
         try:
